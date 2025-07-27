@@ -2,28 +2,50 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Test de Requêtes Edge</title>
+  <title>💥 Test de Requêtes Ultra-Rapide</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+    }
+    #status {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>💥 Lancer un test de charge</h1>
-  <button id="start">Go (⚠️ test progressif)</button>
-  <p id="status">Aucune requête encore…</p>
+  <h1>🚀 Test de Charge Ultra-Rapide</h1>
+  <button id="start">Lancer les requêtes</button>
+  <p id="status">Aucune requête envoyée…</p>
 
   <script>
-    const total = 200000; // Tu peux ajuster
-    const delay = 1; // délai entre chaque requête (ms)
+    const total = 2000000; // Nombre total de requêtes à envoyer
+    const batchSize = 5000; // Nombre de requêtes par frame
     let count = 0;
 
     document.getElementById("start").onclick = () => {
-      const interval = setInterval(() => {
-        const img = new Image();
-        img.src = `fake.jpg?rand=${Math.random()}`;
-        count++;
-        document.body.appendChild(img);
-        document.getElementById("status").innerText = `Requêtes envoyées : ${count}`;
+      document.getElementById("start").disabled = true;
 
-        if (count >= total) clearInterval(interval);
-      }, delay);
+      const loop = () => {
+        for (let i = 0; i < batchSize && count < total; i++) {
+          const img = new Image();
+          img.src = `https://dang-blue.vercel.app/fake.jpg?rand=${Math.random()}`;
+          // PAS appendChild pour ne pas saturer le DOM
+          count++;
+        }
+
+        document.getElementById("status").innerText = `Requêtes envoyées : ${count.toLocaleString()}`;
+
+        if (count < total) {
+          requestAnimationFrame(loop);
+        } else {
+          document.getElementById("status").innerText += " ✅ Terminé !";
+        }
+      };
+
+      requestAnimationFrame(loop);
     };
   </script>
 </body>
