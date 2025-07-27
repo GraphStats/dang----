@@ -2,17 +2,29 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Test de Charge Edge</title>
+  <title>Test de Requêtes Edge</title>
 </head>
 <body>
-  <h1>Chargement de ressources… 🌀</h1>
+  <h1>💥 Lancer un test de charge</h1>
+  <button id="start">Go (⚠️ test progressif)</button>
+  <p id="status">Aucune requête encore…</p>
+
   <script>
-    const total = 200000; // ⚠️ Change à 100000 si t'as VRAIMENT une bonne raison 😅
-    for (let i = 0; i < total; i++) {
-      const img = new Image();
-      img.src = `fake.jpg?rand=${Math.random()}`;
-      document.body.appendChild(img);
-    }
+    const total = 200000; // Tu peux ajuster
+    const delay = 10; // délai entre chaque requête (ms)
+    let count = 0;
+
+    document.getElementById("start").onclick = () => {
+      const interval = setInterval(() => {
+        const img = new Image();
+        img.src = `fake.jpg?rand=${Math.random()}`;
+        count++;
+        document.body.appendChild(img);
+        document.getElementById("status").innerText = `Requêtes envoyées : ${count}`;
+
+        if (count >= total) clearInterval(interval);
+      }, delay);
+    };
   </script>
 </body>
 </html>
